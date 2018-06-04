@@ -13,48 +13,22 @@ DroidBox is developed to offer dynamic analysis of Android applications. The fol
 - Listing broadcast receivers
 - Sent SMS and phone calls
 
+Working
+========
 
-Additionally, two graphs are generated visualizing the behavior of the package. One showing the temporal order of the operations and the other one being a treemap that can be used to check similarity between analyzed packages.
+1. An APK is passed to droidbox as a parameter along with the amount of time the APK should run.
+2. The Droidbox launches Android's Virtual Machine 
+3. Droidbox then installs the APK on Android's virtual machine using MonkeyRunner
+4. The App then begin execution for the specied amount of time
+5. The App start running on the virtual machine and all the information is gathered using logcat
+6. During the time of App execution, certain events are injected to android's virtual machine as there may have been some malicious apps that might be waiting for certain event to occur in order to perform some malicious task.
+7. The gathered activity log is then forward to droidbox where it is parsed and useful information is extracted and given the json format and then converted to a CSV.
+8. The information is CSV is used to train and test various machine learning algorithms
+9. Based on the trained and tested algorithm, new fresh information regarding an App is given to the machine learning algorithm where is predicts whether the App is malicious or benign.
 
-![Alt text](https://www.honeynet.org/sites/default/files/files/images/behaviorgraph.preview.png "Behavior graph")
+How to Run
+==========
 
-
-![Alt text](https://www.honeynet.org/sites/default/files/files/images/tree.preview.png "Treemap graph")
-
-Setup
-======
-
-This is a guide to get DroidBox running. The release has only been tested on Linux and Mac OS. If you do not have the Android SDK, download it from http://developer.android.com/sdk/index.html. The following libraries are required: pylab and matplotlib to provide visualization of the analysis result.
-
-- Export the path for the SDK tools
-
-```
-export PATH=$PATH:/path/to/android-sdk/tools/
-export PATH=$PATH:/path/to/android-sdk/platform-tools/
-```
-
-- Download necessary files and uncompress it anywhere
-
-```
-wget https://github.com/pjlantz/droidbox/releases/download/v4.1.1/DroidBox411RC.tar.gz
-```
-
-- Setup a new AVD targeting Android 4.1.2 and choose Nexus 4 as device as well as ARM as CPU type by running:
-
-```
-android 
-```
-
-- Start the emulator with the new AVD:
-
-```
-./startemu.sh <AVD name>
-```
-
-- When emulator has booted up, start analyzing samples (please use the absolute path to the apk):
-
-```
-./droidbox.sh <file.apk> <duration in secs (optional)> 
-```
-
-The analysis is currently not automated except for installing and starting packages. Ending the analysis is simply done by pressing Ctrl-C. A package will also be implemented soon to populate the emulator with data prior to performing analysis.
+1. Download Android System Images from the link (https://drive.google.com/open?id=17otDE8U7eNHj2I-_LeDK8vCdZc0cu1Jw) and place them in "images" folder. Create folder if not already exisits.
+2. Run the setupenv.sh script to setup envirnoment variables.
+3. Next, Everyhting is automated, Just Run the analyze.sh
